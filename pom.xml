@@ -12,6 +12,7 @@
 
     <modules>
         <module>L01-maven</module>
+        <module>L03-arraylist</module>
     </modules>
 
     <properties>
