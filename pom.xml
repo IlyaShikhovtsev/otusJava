@@ -18,6 +18,7 @@
 
   <modules>
     <module>L01-maven</module>
+    <module>L02-shade</module>
   </modules>
 
   <properties>
