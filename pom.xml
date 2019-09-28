@@ -9,7 +9,7 @@
   <version>2019-06-SNAPSHOT</version>
 
   <packaging>pom</packaging>
-
+  
   <developers>
     <developer>
       <name>Ilya Shikhovtsev</name>
@@ -19,6 +19,7 @@
   <modules>
     <module>L01-maven</module>
     <module>L02-shade</module>
+    <module>L03-arraylist</module>
   </modules>
 
   <properties>
