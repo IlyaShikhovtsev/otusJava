@@ -6,10 +6,10 @@
 
   <groupId>ru.shikhovtsev</groupId>
   <artifactId>OtusJavaHW</artifactId>
-  <version>2019-06-SNAPSHOT</version>
+  <version>${revision}</version>
 
   <packaging>pom</packaging>
-  
+
   <developers>
     <developer>
       <name>Ilya Shikhovtsev</name>
@@ -23,18 +23,122 @@
   </modules>
 
   <properties>
-    <maven.compiler.target>11</maven.compiler.target>
-    <maven.compiler.source>11</maven.compiler.source>
+    <!--region General-->
+    <exec.mainClass>ru.shikhovtsev.HelloOtus</exec.mainClass>
+    <revision>2019-06-SNAPSHOT</revision>
+    <java.version>12</java.version>
+    <minimal.maven.version>3.5.0</minimal.maven.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <!--endregion-->
+
+    <!--region BOMs-->
+    <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
+    <!--endregion-->
+
+    <!--region Libs-->
     <com.google.guava.version>28.0-jre</com.google.guava.version>
+    <commons-io.version>2.6</commons-io.version>
+    <!--endregion-->
+
+    <!--region Plugins-->
+    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+    <maven.compiler.parameters>true</maven.compiler.parameters>
+    <maven.compiler.release>${java.version}</maven.compiler.release>
+    <maven.compiler.parameters>true</maven.compiler.parameters>
+    <maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
+    <maven-assembly-plugin.descriptorSuffix>jar-with-dependencies</maven-assembly-plugin.descriptorSuffix>
+    <maven-shade-plugin.version>3.2.1</maven-shade-plugin.version>
+    <!--endregion-->
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <!--region BOMs-->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <!--endregion-->
+      <!--region Libs-->
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
         <version>${com.google.guava.version}</version>
       </dependency>
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>${commons-io.version}</version>
+      </dependency>
+      <!--endregion-->
     </dependencies>
   </dependencyManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>${maven-assembly-plugin.version}</version>
+          <configuration>
+            <descriptorRefs>
+              <descriptorRef>${maven-assembly-plugin.descriptorSuffix}</descriptorRef>
+            </descriptorRefs>
+            <archive>
+              <manifest>
+                <mainClass>${exec.mainClass}</mainClass>
+              </manifest>
+            </archive>
+          </configuration>
+          <executions>
+            <execution>
+              <id>make-assembly</id>
+              <phase>package</phase>
+              <goals>
+                <goal>single</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven-compiler-plugin.version}</version>
+          <configuration>
+            <compilerArgs>
+              <arg>--enable-preview</arg>
+            </compilerArgs>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>${maven-shade-plugin.version}</version>
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>shade</goal>
+              </goals>
+              <configuration>
+                <transformers>
+                  <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                    <mainClass>ru.shikhovtsev.shade.Main</mainClass>
+                  </transformer>
+                </transformers>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 </project>

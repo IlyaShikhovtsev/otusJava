@@ -7,38 +7,14 @@
   <parent>
     <groupId>ru.shikhovtsev</groupId>
     <artifactId>OtusJavaHW</artifactId>
-    <version>2019-06-SNAPSHOT</version>
+    <version>${revision}</version>
   </parent>
 
   <artifactId>L01-maven</artifactId>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>3.1.1</version>
-        <configuration>
-          <archive>
-            <manifest>
-              <mainClass>ru.shikhovtsev.HelloOtus</mainClass>
-            </manifest>
-          </archive>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-        </configuration>
-        <executions>
-          <execution>
-            <id>make-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+  <properties>
+    <exec.mainClass>ru.shikhovtsev.HelloOtus</exec.mainClass>
+  </properties>
 
   <dependencies>
     <dependency>

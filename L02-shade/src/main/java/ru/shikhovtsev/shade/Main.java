@@ -6,11 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-/*
-Useful link:
-https://maven.apache.org/plugins/maven-shade-plugin/index.html
- */
-
 public class Main {
   public static void main(String[] args) {
     List<Integer> example = new ArrayList<>();
