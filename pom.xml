@@ -25,7 +25,7 @@
   <properties>
     <!--region General-->
     <exec.mainClass>ru.shikhovtsev.HelloOtus</exec.mainClass>
-    <revision>2019-06-SNAPSHOT</revision>
+    <revision>2019-09-SNAPSHOT</revision>
     <java.version>12</java.version>
     <minimal.maven.version>3.5.0</minimal.maven.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
