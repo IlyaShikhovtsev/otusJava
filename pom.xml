@@ -33,11 +33,11 @@
     <!--endregion-->
 
     <!--region BOMs-->
-    <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
+    <spring-boot.version>2.1.8.RELEASE</spring-boot.version>
     <!--endregion-->
 
     <!--region Libs-->
-    <com.google.guava.version>28.0-jre</com.google.guava.version>
+    <com.google.guava.version>28.1-jre</com.google.guava.version>
     <commons-io.version>2.6</commons-io.version>
     <!--endregion-->
 
