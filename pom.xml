@@ -20,6 +20,7 @@
     <module>L01-maven</module>
     <module>L02-shade</module>
     <module>L03-arraylist</module>
+    <module>L04-collection</module>
   </modules>
 
   <properties>
