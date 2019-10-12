@@ -20,7 +20,6 @@
     <module>L01-maven</module>
     <module>L02-shade</module>
     <module>L03-arraylist</module>
-    <module>L04-collection</module>
   </modules>
 
   <properties>
@@ -40,6 +39,7 @@
     <!--region Libs-->
     <com.google.guava.version>28.1-jre</com.google.guava.version>
     <commons-io.version>2.6</commons-io.version>
+    <jmh.version>1.21</jmh.version>
     <!--endregion-->
 
     <!--region Plugins-->
@@ -51,6 +51,7 @@
     <maven-assembly-plugin.descriptorSuffix>jar-with-dependencies</maven-assembly-plugin.descriptorSuffix>
     <maven-shade-plugin.version>3.2.1</maven-shade-plugin.version>
     <!--endregion-->
+    <junit.version>5.4.2</junit.version>
   </properties>
 
   <dependencyManagement>
@@ -74,6 +75,18 @@
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>${commons-io.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
       </dependency>
       <!--endregion-->
     </dependencies>
