@@ -12,14 +12,21 @@ class RoadCalculatorTest {
 
   @Test
   void test() {
-    Vehicle spy = spy(new Car(10));
+    int distance = 50;
+    int speed = 10;
+
+    Vehicle spy = spy(new Car(speed));
     doReturn(1d).when(spy).getFuelCost();
 
-    double result = new TripCalculator(spy).calculateFuelCost(50);
+    TripCalculator calculator = new TripCalculator(spy);
+    double fuelCost = calculator.calculateFuelCost(distance);
+    double tripTime = calculator.calculateTime(distance);
 
-    assertEquals(50, result);
+    assertEquals(distance, fuelCost);
     verify(spy, times(1)).getFuelCost();
-    verify(spy, never()).getSpeed();
+
+    assertEquals(distance / speed, tripTime);
+    verify(spy, times(1)).getSpeed();
   }
 
 }
