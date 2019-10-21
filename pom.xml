@@ -20,6 +20,8 @@
     <module>L01-maven</module>
     <module>L02-shade</module>
     <module>L03-arraylist</module>
+    <module>L04-collection</module>
+    <module>L05-qa</module>
   </modules>
 
   <properties>
@@ -33,7 +35,7 @@
     <!--endregion-->
 
     <!--region BOMs-->
-    <spring-boot.version>2.1.8.RELEASE</spring-boot.version>
+    <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
     <!--endregion-->
 
     <!--region Libs-->
@@ -50,8 +52,8 @@
     <maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
     <maven-assembly-plugin.descriptorSuffix>jar-with-dependencies</maven-assembly-plugin.descriptorSuffix>
     <maven-shade-plugin.version>3.2.1</maven-shade-plugin.version>
+    <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
     <!--endregion-->
-    <junit.version>5.4.2</junit.version>
   </properties>
 
   <dependencyManagement>
@@ -75,18 +77,6 @@
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>${commons-io.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-api</artifactId>
-        <version>${junit.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-engine</artifactId>
-        <version>${junit.version}</version>
-        <scope>test</scope>
       </dependency>
       <!--endregion-->
     </dependencies>
@@ -145,6 +135,22 @@
               </configuration>
             </execution>
           </executions>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven-surefire-plugin.version}</version>
+          <configuration>
+            <argLine>--enable-preview</argLine>
+            <includes>
+              <include>**/Test*.java</include>
+              <include>**/*Test.java</include>
+              <include>**/*Tests.java</include>
+              <include>**/*TestCase.java</include>
+            </includes>
+            <properties>
+              <excludeTags>slow</excludeTags>
+            </properties>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
