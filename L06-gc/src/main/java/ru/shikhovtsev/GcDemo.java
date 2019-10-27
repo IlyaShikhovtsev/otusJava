@@ -19,9 +19,9 @@ import java.util.*;
 
   -XX:+UseG1GC
 
-  {G1 Young Generation=GCInfo{totalDuration=33241, count=788, gcCauses=[G1 Humongous Allocation, G1 Evacuation Pause]},
-  G1 Old Generation=GCInfo{totalDuration=4464, count=14, gcCauses=[G1 Humongous Allocation, G1 Evacuation Pause]}}
-  time:311
+  {G1 Young Generation=GCInfo{maxDuration=228, totalDuration=61377, count=1496, gcCauses=[G1 Humongous Allocation, G1 Evacuation Pause]},
+  G1 Old Generation=GCInfo{maxDuration=821, totalDuration=193394, count=472, gcCauses=[G1 Humongous Allocation, G1 Evacuation Pause]}}
+  time:688
 
 
   -XX:+UseSerialGC
@@ -74,8 +74,8 @@ public class GcDemo {
         list.add(new String(new char[0]));
       }
       list.subList(0, size - 1100).clear();
-      Thread.sleep(10); //Label_1
-      System.out.println(list.size());
+      Thread.sleep(10);
+      System.out.println("list.size() = " + list.size());
     }
   }
 
@@ -109,6 +109,7 @@ public class GcDemo {
   }
 
   class GCInfo {
+    private long maxDuration = 0;
     private long totalDuration = 0;
     private int count = 0;
 
@@ -117,6 +118,7 @@ public class GcDemo {
     public void addDuration(long duration) {
       count++;
       totalDuration += duration;
+      maxDuration = maxDuration < duration ? duration : maxDuration;
     }
 
     public void addCause(String gcCause) {
@@ -126,7 +128,8 @@ public class GcDemo {
     @Override
     public String toString() {
       return "GCInfo{" +
-          "totalDuration=" + totalDuration +
+          "maxDuration=" + maxDuration +
+          ", totalDuration=" + totalDuration +
           ", count=" + count +
           ", gcCauses=" + gcCauses +
           '}';
