@@ -22,6 +22,7 @@
     <module>L03-arraylist</module>
     <module>L04-collection</module>
     <module>L05-qa</module>
+    <module>L06-gc</module>
   </modules>
 
   <properties>
