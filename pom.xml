@@ -23,6 +23,7 @@
     <module>L04-collection</module>
     <module>L05-qa</module>
     <module>L06-gc</module>
+    <module>L07-remotedebug</module>
   </modules>
 
   <properties>
@@ -43,6 +44,8 @@
     <com.google.guava.version>28.1-jre</com.google.guava.version>
     <commons-io.version>2.6</commons-io.version>
     <jmh.version>1.21</jmh.version>
+    <jol-core.version>0.9</jol-core.version>
+    <asm.version>7.2</asm.version>
     <!--endregion-->
 
     <!--region Plugins-->
@@ -79,6 +82,21 @@
         <artifactId>commons-io</artifactId>
         <version>${commons-io.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.openjdk.jol</groupId>
+        <artifactId>jol-core</artifactId>
+        <version>${jol-core.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.asm</groupId>
+        <artifactId>asm</artifactId>
+        <version>${asm.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.asm</groupId>
+        <artifactId>asm-commons</artifactId>
+        <version>${asm.version}</version>
+      </dependency>
       <!--endregion-->
     </dependencies>
   </dependencyManagement>
@@ -112,11 +130,6 @@
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>${maven-compiler-plugin.version}</version>
-          <configuration>
-            <compilerArgs>
-              <arg>--enable-preview</arg>
-            </compilerArgs>
-          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-shade-plugin</artifactId>
