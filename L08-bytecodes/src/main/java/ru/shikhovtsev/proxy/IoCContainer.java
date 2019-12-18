@@ -6,34 +6,41 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class IoCContainer {
 
-  public MyService getService() {
-    if (Arrays.stream(MyServiceImpl.class.getMethods()).anyMatch(m -> m.isAnnotationPresent(Log.class))) {
-      var invocationHandler = new MyInvocationHandler(new MyServiceImpl());
-      return (MyService) Proxy.newProxyInstance(
-          this.getClass().getClassLoader(), new Class<?>[]{MyService.class},
+  @SuppressWarnings("unchecked")
+  public <U, T extends U> U getProxiedObject(Class<U> castTo, T obj) {
+    if (Arrays.stream(obj.getClass().getMethods()).anyMatch(m -> m.isAnnotationPresent(Log.class))) {
+      var invocationHandler = new MyInvocationHandler(obj);
+
+      return (U) Proxy.newProxyInstance(
+          this.getClass().getClassLoader(), obj.getClass().getInterfaces(),
           invocationHandler);
     }
-    return new MyServiceImpl();
+    return obj;
   }
 
   private static class MyInvocationHandler implements InvocationHandler {
 
-    private MyService myService;
+    private Object obj;
+    private List<Method> methodsWithLog;
 
-    public MyInvocationHandler(MyService myService) {
-      this.myService = myService;
+    public MyInvocationHandler(Object obj) {
+      this.obj = obj;
+      methodsWithLog = Arrays.stream(obj.getClass().getMethods())
+          .filter(m -> m.isAnnotationPresent(Log.class))
+          .collect(Collectors.toList());
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-      var methodOfImpl = myService.getClass().getMethod(method.getName(), method.getParameterTypes());
-      if (methodOfImpl.isAnnotationPresent(Log.class)) {
+      if (methodsWithLog.stream().anyMatch(m -> m.getName().equals(method.getName()) && Arrays.equals(m.getParameterTypes(), method.getParameterTypes()))) {
         System.out.println("Invoking method: " + method.getName() + ", params: " + Arrays.toString(method.getParameters()));
       }
-      return method.invoke(myService, args);
+      return method.invoke(obj, args);
     }
   }
 
