@@ -13,6 +13,10 @@ public class IoCContainer {
 
   @SuppressWarnings("unchecked")
   public <U, T extends U> U getProxiedObject(Class<U> castTo, T obj) {
+    if (!castTo.isInterface()) {
+      throw new RuntimeException("The first parameter must be an interface!");
+    }
+
     if (Arrays.stream(obj.getClass().getMethods()).anyMatch(m -> m.isAnnotationPresent(Log.class))) {
       var invocationHandler = new MyInvocationHandler(obj);
 
