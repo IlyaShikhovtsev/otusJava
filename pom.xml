@@ -24,6 +24,7 @@
     <module>L05-qa</module>
     <module>L06-gc</module>
     <module>L07-remotedebug</module>
+    <module>L08-bytecodes</module>
   </modules>
 
   <properties>
