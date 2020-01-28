@@ -25,6 +25,7 @@
     <module>L06-gc</module>
     <module>L07-remotedebug</module>
     <module>L08-bytecodes</module>
+      <module>L09-annotations</module>
   </modules>
 
   <properties>
@@ -42,6 +43,7 @@
     <!--endregion-->
 
     <!--region Libs-->
+    <lombok.version>1.18.10</lombok.version>
     <com.google.guava.version>28.1-jre</com.google.guava.version>
     <commons-io.version>2.6</commons-io.version>
     <jmh.version>1.21</jmh.version>
@@ -50,6 +52,8 @@
     <!--endregion-->
 
     <!--region Plugins-->
+    <lombok-maven-plugin.version>1.18.8.1</lombok-maven-plugin.version>
+
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     <maven.compiler.parameters>true</maven.compiler.parameters>
     <maven.compiler.release>${java.version}</maven.compiler.release>
@@ -72,6 +76,12 @@
         <scope>import</scope>
       </dependency>
       <!--endregion-->
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+        <scope>provided</scope>
+      </dependency>
       <!--region Libs-->
       <dependency>
         <groupId>com.google.guava</groupId>
@@ -167,12 +177,34 @@
             </properties>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.projectlombok</groupId>
+          <artifactId>lombok-maven-plugin</artifactId>
+          <version>${lombok-maven-plugin.version}</version>
+          <executions>
+            <execution>
+              <phase>generate-sources</phase>
+              <goals>
+                <goal>delombok</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
       </plugins>
     </pluginManagement>
 
     <plugins>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.0.1</version>
       </plugin>
     </plugins>
   </build>
