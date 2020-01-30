@@ -18,8 +18,9 @@ public class SimpleTest {
   }
 
   @Test
-  public void test2() {
-    System.out.println("First test!");
+  public void checkAfterEachIfTestFailed() {
+    System.out.println("check afterEach");
+    throw new RuntimeException();
   }
 
   @Test
@@ -27,10 +28,6 @@ public class SimpleTest {
     System.out.println("First test!");
   }
 
-  @Test
-  public void test4() {
-    System.out.println("First test!");
-  }
 
   @BeforeEach
   public void before() {
@@ -38,8 +35,13 @@ public class SimpleTest {
   }
 
   @AfterEach
-  public void after() {
-    System.out.println("After");
+  public void firstAfter() {
+    System.out.println("first After");
+  }
+
+  @AfterEach
+  public void secondAfter() {
+    System.out.println("second After");
   }
 
 }
