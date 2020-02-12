@@ -12,7 +12,6 @@ public class TestsRunner {
     Class<?> testClass;
     try {
       testClass = Class.forName(className);
-      testClass.getDeclaredConstructor().newInstance();
     } catch (Exception e) {
       e.printStackTrace();
       return;
@@ -43,17 +42,7 @@ public class TestsRunner {
         failed = true;
       }
 
-      if (failed) {
-        executeEachAfterMethods(o, processor);
-      } else {
-        try {
-          for (Method method : processor.getAfterEachMethods()) {
-            method.invoke(o);
-          }
-        } catch (Exception e) {
-          failed = true;
-        }
-      }
+      failed |= executeEachAfterMethods(o, processor);
 
       if (failed) {
         errors.add(testMethod.getName());
@@ -70,12 +59,15 @@ public class TestsRunner {
     System.out.println("Failed tests - " + errors);
   }
 
-  private static void executeEachAfterMethods(Object o, AnnotationProcessor processor) {
+  private static boolean executeEachAfterMethods(Object o, AnnotationProcessor processor) {
+    boolean failed = false;
     for (Method method : processor.getAfterEachMethods()) {
       try {
         method.invoke(o);
       } catch (Exception ignored) {
+        failed = true;
       }
     }
+    return failed;
   }
 }
