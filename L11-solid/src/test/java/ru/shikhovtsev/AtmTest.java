@@ -6,9 +6,10 @@ import org.junit.jupiter.api.Test;
 import ru.shikhovtsev.exception.InsufficientFundsException;
 import ru.shikhovtsev.exception.UnsupportedNominalException;
 import ru.shikhovtsev.model.Atm;
-import ru.shikhovtsev.model.Cassette;
+import ru.shikhovtsev.model.AtmCassette;
 import ru.shikhovtsev.model.Nominal;
 import ru.shikhovtsev.service.AtmService;
+import ru.shikhovtsev.service.AtmServiceImpl;
 import ru.shikhovtsev.service.CassetteService;
 
 import java.util.HashMap;
@@ -17,45 +18,37 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static ru.shikhovtsev.model.Nominal.*;
 
 public class AtmTest {
-
-  private static final Nominal NOMINAL_10 = new Nominal("Десять", 10);
-  private static final Nominal NOMINAL_50 = new Nominal("Пятьдесят", 50);
-  private static final Nominal NOMINAL_100 = new Nominal("Сто", 100);
-  private static final Nominal NOMINAL_500 = new Nominal("Пятьсот", 500);
-  private static final Nominal NOMINAL_1000 = new Nominal("Тысяча", 1000);
-  private static final Nominal NOMINAL_5000 = new Nominal("Пять тысяч", 5000);
-
-  private static Set<Cassette> cassettes;
 
   private Atm atm;
   private static AtmService atmService;
 
   @BeforeAll
   static void createCassettes() {
-    atmService = new AtmService(new CassetteService());
-
-    cassettes = new HashSet<>();
-    cassettes.add(new Cassette(NOMINAL_10));
-    cassettes.add(new Cassette(NOMINAL_50));
-    cassettes.add(new Cassette(NOMINAL_100));
-    cassettes.add(new Cassette(NOMINAL_500));
-    cassettes.add(new Cassette(NOMINAL_1000));
+    atmService = new AtmServiceImpl(new CassetteService() {});
   }
 
   @BeforeEach
   void refreshAtm() {
+    Set<AtmCassette> cassettes = new HashSet<>();
+    cassettes.add(new AtmCassette(TEN));
+    cassettes.add(new AtmCassette(FIFTY));
+    cassettes.add(new AtmCassette(HUNDRED));
+    cassettes.add(new AtmCassette(FIVE_HUNDRED));
+    cassettes.add(new AtmCassette(THOUSAND));
+
     atm = new Atm(cassettes);
   }
 
   @Test
   void addBanknotes() {
     var inputBanknotes = new HashMap<Nominal, Integer>();
-    inputBanknotes.put(NOMINAL_10, 7);
-    inputBanknotes.put(NOMINAL_100, 3);
-    inputBanknotes.put(NOMINAL_500, 8);
-    inputBanknotes.put(NOMINAL_1000, 2);
+    inputBanknotes.put(TEN, 7);
+    inputBanknotes.put(HUNDRED, 3);
+    inputBanknotes.put(FIVE_HUNDRED, 8);
+    inputBanknotes.put(THOUSAND, 2);
 
     atmService.addBanknotes(atm, inputBanknotes);
 
@@ -65,7 +58,7 @@ public class AtmTest {
   @Test
   void tryToInputUnsupportedNominal() {
     var inputBanknotes = new HashMap<Nominal, Integer>();
-    inputBanknotes.put(NOMINAL_5000, 2);
+    inputBanknotes.put(FIVE_THOUSAND, 2);
 
     assertThrows(UnsupportedNominalException.class, () -> atmService.addBanknotes(atm, inputBanknotes));
   }
@@ -73,8 +66,8 @@ public class AtmTest {
   @Test
   void getBalance() {
     var inputBanknotes = new HashMap<Nominal, Integer>();
-    inputBanknotes.put(NOMINAL_10, 7);
-    inputBanknotes.put(NOMINAL_100, 3);
+    inputBanknotes.put(TEN, 7);
+    inputBanknotes.put(HUNDRED, 3);
 
     atmService.addBanknotes(atm, inputBanknotes);
 
@@ -84,10 +77,10 @@ public class AtmTest {
   @Test
   void getMoney() {
     var inputBanknotes = new HashMap<Nominal, Integer>();
-    inputBanknotes.put(NOMINAL_10, 14);
-    inputBanknotes.put(NOMINAL_100, 6);
-    inputBanknotes.put(NOMINAL_500, 8);
-    inputBanknotes.put(NOMINAL_1000, 2);
+    inputBanknotes.put(TEN, 14);
+    inputBanknotes.put(HUNDRED, 6);
+    inputBanknotes.put(FIVE_HUNDRED, 8);
+    inputBanknotes.put(THOUSAND, 2);
 
     atmService.addBanknotes(atm, inputBanknotes);
 

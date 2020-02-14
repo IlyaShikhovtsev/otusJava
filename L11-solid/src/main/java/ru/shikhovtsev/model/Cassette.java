@@ -1,20 +1,11 @@
 package ru.shikhovtsev.model;
 
-import lombok.*;
+public interface Cassette {
+  void addBanknotes(int banknotesCount);
 
-@RequiredArgsConstructor
-@Getter
-@EqualsAndHashCode
-@ToString
-public class Cassette implements Comparable<Cassette> {
+  void getBanknotes(int banknotesCount);
 
-  private final Nominal nominal;
-  @Setter
-  @EqualsAndHashCode.Exclude
-  private int banknotesCount = 0;
+  int getBanknotesCount();
 
-  @Override
-  public int compareTo(Cassette another) {
-    return nominal.compareTo(another.nominal);
-  }
+  Nominal getNominal();
 }

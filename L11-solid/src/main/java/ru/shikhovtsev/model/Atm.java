@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode
 @ToString
 public class Atm {
-  private Set<Cassette> cassettes;
+  private Set<AtmCassette> cassettes;
 
   public List<Nominal> getNominals() {
     return cassettes.stream().map(Cassette::getNominal).collect(Collectors.toList());
