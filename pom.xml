@@ -28,6 +28,7 @@
     <module>L09-annotations</module>
     <module>L11-solid</module>
     <module>L12-behavioral</module>
+      <module>L13-structuralPatterns</module>
   </modules>
 
   <properties>
