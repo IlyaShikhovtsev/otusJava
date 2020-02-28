@@ -33,10 +33,6 @@ public class AtmServiceImpl implements AtmService {
       throw new UnsupportedNominalException();
     }
 
-    atm.getCassettes().stream()
-        .filter(c -> banknotes.containsKey(c.getNominal()))
-        .forEach(c -> cassetteService.addBanknotes(c, banknotes.get(c.getNominal())));
-
     for (AtmCassette cassette : atm.getCassettes()) {
       if (banknotes.containsKey(cassette.getNominal())) {
         cassetteService.addBanknotes(cassette, banknotes.get(cassette.getNominal()));
