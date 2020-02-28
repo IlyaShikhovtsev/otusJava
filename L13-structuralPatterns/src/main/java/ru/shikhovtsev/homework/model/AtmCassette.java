@@ -35,6 +35,11 @@ public class AtmCassette implements Cassette, Comparable<AtmCassette> {
   }
 
   @Override
+  public long getBalance() {
+    return nominal.getValue() * banknotesCount;
+  }
+
+  @Override
   public int compareTo(AtmCassette another) {
     return nominal.compareTo(another.nominal);
   }

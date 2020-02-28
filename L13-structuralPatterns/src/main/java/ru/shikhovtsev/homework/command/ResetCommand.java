@@ -14,7 +14,8 @@ public class ResetCommand implements Command {
   }
 
   @Override
-  public void action(Atm atm) {
+  public long action(Atm atm) {
     atmService.reset(atm, originator.getOriginalCassettes(atm));
+    return 0;
   }
 }

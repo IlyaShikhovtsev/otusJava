@@ -20,7 +20,11 @@ public class AtmServiceImpl implements AtmService {
 
   @Override
   public long getBalance(Atm atm) {
-    return atm.getCassettes().stream().map(c -> c.getNominal().getValue() * c.getBanknotesCount()).reduce(0, Integer::sum);
+    long result = 0L;
+    for (AtmCassette cassette : atm.getCassettes()) {
+      result += cassette.getBalance();
+    }
+    return result;
   }
 
   @Override
@@ -32,6 +36,12 @@ public class AtmServiceImpl implements AtmService {
     atm.getCassettes().stream()
         .filter(c -> banknotes.containsKey(c.getNominal()))
         .forEach(c -> cassetteService.addBanknotes(c, banknotes.get(c.getNominal())));
+
+    for (AtmCassette cassette : atm.getCassettes()) {
+      if (banknotes.containsKey(cassette.getNominal())) {
+        cassetteService.addBanknotes(cassette, banknotes.get(cassette.getNominal()));
+      }
+    }
   }
 
   @Override

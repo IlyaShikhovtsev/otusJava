@@ -14,6 +14,9 @@ public class DepartmentImpl implements Department {
   private final List<EventListener> listeners;
   private final Originator originator;
 
+  private BalanceCommand balanceCommand;
+  private ResetCommand resetCommand;
+
   public DepartmentImpl(AtmService atmService, List<EventListener> atms, Originator originator) {
     this.atmService = atmService;
     this.listeners = atms;
@@ -22,16 +25,21 @@ public class DepartmentImpl implements Department {
 
   @Override
   public long getBalance() {
-    return listeners.stream()
-        .map(l -> {
-          var command = new BalanceCommand(atmService);
-          l.execute(command);
-          return command.getBalance();
-        }).reduce(0L, Long::sum);
+    if (balanceCommand == null) {
+      balanceCommand = new BalanceCommand(atmService);
+    }
+    long result = 0;
+    for (EventListener l : listeners) {
+      result += l.execute(balanceCommand);
+    }
+    return result;
   }
 
   @Override
   public void resetAtms() {
-    listeners.forEach(l -> l.execute(new ResetCommand(atmService, originator)));
+    if (resetCommand == null) {
+      resetCommand = new ResetCommand(atmService, originator);
+    }
+    listeners.forEach(l -> l.execute(resetCommand));
   }
 }

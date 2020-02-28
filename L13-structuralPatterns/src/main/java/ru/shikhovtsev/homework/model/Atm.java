@@ -22,8 +22,8 @@ public class Atm implements EventListener {
   }
 
   @Override
-  public void execute(Command command) {
-    command.action(this);
+  public long execute(Command command) {
+    return command.action(this);
   }
 
 

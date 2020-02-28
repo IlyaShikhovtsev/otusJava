@@ -8,4 +8,6 @@ public interface Cassette {
   int getBanknotesCount();
 
   Nominal getNominal();
+
+  long getBalance();
 }
