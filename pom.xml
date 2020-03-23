@@ -30,13 +30,14 @@
     <module>L12-behavioral</module>
       <module>L13-structuralPatterns</module>
       <module>L14-creationalPatterns</module>
+    <module>L15-json</module>
   </modules>
 
   <properties>
     <!--region General-->
     <exec.mainClass>ru.shikhovtsev.HelloOtus</exec.mainClass>
     <revision>2019-09-SNAPSHOT</revision>
-    <java.version>12</java.version>
+<!--    <java.version>12</java.version>-->
     <minimal.maven.version>3.5.0</minimal.maven.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
