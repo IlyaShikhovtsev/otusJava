@@ -1,5 +1,6 @@
 package ru.shikhovtsev;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.StringJoiner;
@@ -7,98 +8,46 @@ import java.util.StringJoiner;
 public class DIYJsonObjectWriter {
 
   public String toJson(Object object) {
-    if (object instanceof String) {
-      return "\"" + object + "\"";
+    if (object == null) {
+      return null;
     }
-    if (object instanceof Number) {
+
+    if (object instanceof String) {
+      return "\"" + object.toString() + "\"";
+    }
+
+    if (object instanceof Number || object instanceof Boolean || object instanceof Character) {
       return object.toString();
     }
 
     if (object instanceof Collection<?>) {
-      var collection = (Collection<?>) object;
-      var sj = new StringJoiner(",");
-      for (Object o : collection) {
-        sj.add(toJson(o));
-      }
-      return "[" + sj.toString() + "]";
-    }
-
-    if (object instanceof boolean[]) {
-      var array = (boolean[]) object;
-      var sj = new StringJoiner(",");
-      for (Object o : array) {
-        sj.add(toJson(o));
-      }
-      return "[" + sj.toString() + "]";
-    }
-
-    if (object instanceof int[]) {
-      var array = (int[]) object;
-      var sj = new StringJoiner(",");
-      for (Object o : array) {
-        sj.add(toJson(o));
-      }
-      return "[" + sj.toString() + "]";
-    }
-
-    if (object instanceof long[]) {
-      var array = (long[]) object;
-      var sj = new StringJoiner(",");
-      for (Object o : array) {
-        sj.add(toJson(o));
-      }
-      return "[" + sj.toString() + "]";
-    }
-
-    if (object instanceof byte[]) {
-      var array = (byte[]) object;
-      var sj = new StringJoiner(",");
-      for (Object o : array) {
-        sj.add(toJson(o));
-      }
-      return "[" + sj.toString() + "]";
-    }
-
-    if (object instanceof short[]) {
-      var array = (short[]) object;
-      var sj = new StringJoiner(",");
-      for (Object o : array) {
-        sj.add(toJson(o));
-      }
-      return "[" + sj.toString() + "]";
-    }
-
-    if (object instanceof double[]) {
-      var array = (double[]) object;
-      var sj = new StringJoiner(",");
-      for (Object o : array) {
-        sj.add(toJson(o));
-      }
-      return "[" + sj.toString() + "]";
-    }
-
-    if (object instanceof float[]) {
-      var array = (float[]) object;
-      var sj = new StringJoiner(",");
-      for (Object o : array) {
-        sj.add(toJson(o));
-      }
-      return "[" + sj.toString() + "]";
+      return toJson((Collection<?>) object);
     }
 
     if (object.getClass().isArray()) {
-      Object[] array = (Object[]) object;
-      var sj = new StringJoiner(",");
-      for (Object o : array) {
-        sj.add(toJson(o));
-      }
-      return "[" + sj.toString() + "]";
+      return arrayToJson(object);
     }
 
-    return getResult(object);
+    return objectToJson(object);
   }
 
-  private String getResult(Object object) {
+  public String toJson(Collection<?> collection) {
+    var sj = new StringJoiner(",");
+    for (Object o : collection) {
+      sj.add(toJson(o));
+    }
+    return "[" + sj.toString() + "]";
+  }
+
+  private String arrayToJson(Object object) {
+    var sj = new StringJoiner(",");
+    for (int i = 0; i < Array.getLength(object); i++) {
+      sj.add(toJson(Array.get(object, i)));
+    }
+    return "[" + sj.toString() + "]";
+  }
+
+  private String objectToJson(Object object) {
     var fields = object.getClass().getDeclaredFields();
     var sj = new StringJoiner(",");
     for (Field field : fields) {
