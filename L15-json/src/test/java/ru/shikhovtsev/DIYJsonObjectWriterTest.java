@@ -44,6 +44,16 @@ class DIYJsonObjectWriterTest {
   }
 
   @Test
+  @DisplayName("BagPrimitives to json method works correctly")
+  void bagPrimitivesToJson() {
+    var bag = new BagOfPrimitives(22, "test", 10);
+    var json = jsonWriter.toJson(bag);
+
+    assertEquals(gson.toJson(bag), json);
+    assertEquals(bag, gson.fromJson(json, BagOfPrimitives.class));
+  }
+
+  @Test
   @DisplayName("Collection of BagPrimitives method works correctly")
   void bagPrimitives() {
     var bag = new BagOfPrimitives(22, "test", 10);
