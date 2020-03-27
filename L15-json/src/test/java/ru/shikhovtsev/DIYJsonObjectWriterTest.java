@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.shikhovtsev.json.DIYJsonObjectWriter;
 
 import java.util.List;
 

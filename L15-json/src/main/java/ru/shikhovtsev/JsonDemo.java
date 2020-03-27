@@ -2,6 +2,7 @@ package ru.shikhovtsev;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import ru.shikhovtsev.json.DIYJsonObjectWriter;
 
 import java.util.List;
 
