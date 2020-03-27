@@ -30,6 +30,7 @@
     <module>L12-behavioral</module>
     <module>L13-structuralPatterns</module>
     <module>L14-creationalPatterns</module>
+    <module>L15-json</module>
   </modules>
 
   <properties>
