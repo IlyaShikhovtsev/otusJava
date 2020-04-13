@@ -31,6 +31,7 @@
     <module>L13-structuralPatterns</module>
     <module>L14-creationalPatterns</module>
     <module>L15-json</module>
+    <module>L17-jdbc</module>
   </modules>
 
   <properties>
@@ -126,6 +127,10 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
     </dependency>
   </dependencies>
 

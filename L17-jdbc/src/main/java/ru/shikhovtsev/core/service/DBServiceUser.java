@@ -1,0 +1,13 @@
+package ru.shikhovtsev.core.service;
+
+import ru.shikhovtsev.core.model.User;
+
+import java.util.Optional;
+
+public interface DBServiceUser {
+
+  long saveUser(User user);
+
+  Optional<User> getUser(long id);
+
+}
