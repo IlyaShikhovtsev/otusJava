@@ -21,12 +21,11 @@
   </appender>
 
 
-  <!--<logger name="ru.otus.logging.ex02.LoggerConfigExample" level="info" additivity="true">
+  <logger name="ru.shikhovtsev.core.service.DbServiceUserImpl" level="INFO" additivity="true">
       <appender-ref ref="APP_LOG" />
-  </logger>-->
+  </logger>
 
-  <root level="DEBUG">
+  <root level="INFO">
     <appender-ref ref="STDOUT"/>
-    <appender-ref ref="APP_LOG"/>
   </root>
 </configuration>

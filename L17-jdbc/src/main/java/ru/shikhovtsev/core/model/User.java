@@ -1,27 +1,19 @@
 package ru.shikhovtsev.core.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import ru.shikhovtsev.core.Id;
+
+@Getter
+@NoArgsConstructor
+@ToString
 public class User {
-  private final long id;
-  private final String name;
+  @Id
+  private long id;
+  private String name;
 
-  public User(long id, String name) {
-    this.id = id;
+  public User(String name) {
     this.name = name;
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  @Override
-  public String toString() {
-    return "User{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        '}';
   }
 }
