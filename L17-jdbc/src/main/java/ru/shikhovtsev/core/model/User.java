@@ -1,16 +1,16 @@
 package ru.shikhovtsev.core.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import ru.shikhovtsev.core.Id;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @ToString
 public class User {
   @Id
-  private long id;
+  @Setter(AccessLevel.NONE)
+  private Long id;
   private String name;
 
   public User(String name) {

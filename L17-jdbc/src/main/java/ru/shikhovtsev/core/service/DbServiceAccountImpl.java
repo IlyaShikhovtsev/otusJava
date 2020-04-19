@@ -18,7 +18,7 @@ public class DbServiceAccountImpl implements DBServiceAccount {
   }
 
   @Override
-  public long saveAccount(Account account) {
+  public Long saveAccount(Account account) {
     try (SessionManager sessionManager = accountDao.getSessionManager()) {
       sessionManager.beginSession();
       try {
@@ -27,6 +27,40 @@ public class DbServiceAccountImpl implements DBServiceAccount {
 
         logger.info("created account: {}", accountId);
         return accountId;
+      } catch (Exception e) {
+        logger.error(e.getMessage(), e);
+        sessionManager.rollbackSession();
+        throw new DbServiceException(e);
+      }
+    }
+  }
+
+  @Override
+  public Long updateAccount(Account account) {
+    try (SessionManager sessionManager = accountDao.getSessionManager()) {
+      sessionManager.beginSession();
+      try {
+        Long id = accountDao.update(account);
+        sessionManager.commitSession();
+
+        logger.info("updated account: {}", id);
+        return id;
+      } catch (Exception e) {
+        logger.error(e.getMessage(), e);
+        sessionManager.rollbackSession();
+        throw new DbServiceException(e);
+      }
+    }
+  }
+
+  @Override
+  public Long createOrUpdate(Account account) {
+    try (SessionManager sessionManager = accountDao.getSessionManager()) {
+      sessionManager.beginSession();
+      try {
+        Long id = accountDao.createOrUpdate(account);
+        sessionManager.commitSession();
+        return id;
       } catch (Exception e) {
         logger.error(e.getMessage(), e);
         sessionManager.rollbackSession();

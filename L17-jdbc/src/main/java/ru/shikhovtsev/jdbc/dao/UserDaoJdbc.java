@@ -20,8 +20,11 @@ public class UserDaoJdbc implements UserDao {
   private final JdbcTemplate<User> jdbcTemplate;
 
   @Override
-  public Optional<User> findById(long id) {
+  public Optional<User> findById(Long id) {
     try {
+      if (id == null) {
+        return Optional.empty();
+      }
       return jdbcTemplate.load(getConnection(), User.class, id);
     } catch (Exception ex) {
       log.error(ex.getMessage(), ex);
@@ -30,9 +33,30 @@ public class UserDaoJdbc implements UserDao {
   }
 
   @Override
-  public long saveUser(User user) {
+  public Long save(User user) {
     try {
       return jdbcTemplate.create(getConnection(), user);
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new UserDaoException(e);
+    }
+  }
+
+  @Override
+  public Long update(User user) {
+    try {
+      jdbcTemplate.update(getConnection(), user);
+      return user.getId();
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      throw new UserDaoException(e);
+    }
+  }
+
+  @Override
+  public Long createOrUpdate(User user) {
+    try {
+      return jdbcTemplate.createOrUpdate(getConnection(), user);
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       throw new UserDaoException(e);

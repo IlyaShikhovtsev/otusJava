@@ -19,7 +19,7 @@ public class DbExecutor<T> {
     }
   }
 
-  public long insertRecord(Connection connection, String sql, List<Object> params) throws SQLException {
+  public long insert(Connection connection, String sql, List<Object> params) throws SQLException {
     Savepoint savePoint = connection.setSavepoint("savePoint");
     try (var ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
       for (int i = 0; i < params.size(); i++) {
@@ -31,6 +31,20 @@ public class DbExecutor<T> {
         rs.next();
         return rs.getLong(1);
       }
+    } catch (SQLException ex) {
+      connection.rollback(savePoint);
+      log.error(ex.getMessage(), ex);
+      throw ex;
+    }
+  }
+
+  public void update(Connection connection, String sql, List<Object> params) throws SQLException {
+    Savepoint savePoint = connection.setSavepoint("savePoint");
+    try (var ps = connection.prepareStatement(sql)) {
+      for (int i = 0; i < params.size(); i++) {
+        ps.setObject(i + 1, params.get(i));
+      }
+      ps.executeUpdate();
     } catch (SQLException ex) {
       connection.rollback(savePoint);
       log.error(ex.getMessage(), ex);

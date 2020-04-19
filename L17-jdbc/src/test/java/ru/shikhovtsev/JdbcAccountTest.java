@@ -45,9 +45,41 @@ public class JdbcAccountTest {
     assertTrue(id != 0);
 
     Optional<Account> account = service.getAccount(id);
-    Account acc = account.orElseThrow(() -> new RuntimeException());
+    Account acc = account.orElseThrow(RuntimeException::new);
 
     assertEquals(acc.getRest(), rest);
     assertEquals(acc.getType(), type);
+  }
+
+  @Test
+  void update() {
+    String type = "typeKek";
+    String type2 = "type2";
+    BigDecimal rest = BigDecimal.valueOf(101);
+
+    var account = new Account(type, rest);
+    long id = service.saveAccount(account);
+
+    account = service.getAccount(id).orElseThrow(RuntimeException::new);
+    account.setType(type2);
+    service.updateAccount(account);
+
+    var accountFromDb = service.getAccount(id).orElseThrow(RuntimeException::new);
+    assertEquals(type2, accountFromDb.getType());
+  }
+
+  @Test
+  void createOrUpdate() {
+    var account = new Account("type", BigDecimal.valueOf(101));
+    Long id = service.createOrUpdate(account);
+    account = service.getAccount(id).orElseThrow(RuntimeException::new);
+
+    String type2 = "type2";
+    account.setType(type2);
+
+    assertEquals(id, service.createOrUpdate(account));
+
+    account = service.getAccount(id).orElseThrow(RuntimeException::new);
+    assertEquals(type2, account.getType());
   }
 }

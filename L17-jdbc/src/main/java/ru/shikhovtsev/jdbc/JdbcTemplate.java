@@ -40,21 +40,32 @@ public class JdbcTemplate<T> {
     return idFields.get(0);
   }
 
-  public long create(Connection connection, T object) throws SQLException {
+  public Long create(Connection connection, T object) throws SQLException {
     var params = new ArrayList<>();
-    return dbExecutor.insertRecord(connection, createSqlInsert(object, params), params);
+    return dbExecutor.insert(connection, createSqlInsert(object, params), params);
   }
 
 
-  public void update(T object) {
-
+  public void update(Connection connection, T object) throws SQLException {
+    var params = new ArrayList<>();
+    dbExecutor.update(connection, createSqlUpdate(object, params), params);
   }
 
-  public void createOrUpdate(T object) {
-
+  public Long createOrUpdate(Connection connection, T object) {
+    try {
+      if (idField.get(object) != null) {
+        update(connection, object);
+        return (Long) idField.get(object);
+      } else {
+        return create(connection, object);
+      }
+    } catch (SQLException | IllegalAccessException e) {
+      log.error(e.getMessage(), e);
+      throw new JdbcTemplateException(e);
+    }
   }
 
-  public Optional<T> load(Connection connection, Class<T> clazz, long id) throws SQLException {
+  public Optional<T> load(Connection connection, Class<T> clazz, Long id) throws SQLException {
     return dbExecutor.find(connection, createSqlFind(clazz), id, rs -> {
       try {
         if (rs.next()) {
@@ -66,8 +77,10 @@ public class JdbcTemplate<T> {
         }
       } catch (NoSuchMethodException e) {
         log.error("Need default public constructor, class {}", clazz.getName(), e);
+        throw new JdbcTemplateException(e);
       } catch (SQLException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
         log.error(e.getMessage(), e);
+        throw new JdbcTemplateException(e);
       }
       return null;
     });
@@ -89,11 +102,33 @@ public class JdbcTemplate<T> {
         sjValues.add("?");
       } catch (IllegalAccessException ex) {
         log.error(ex.getMessage(), ex);
-        throw new RuntimeException(ex);
+        throw new JdbcTemplateException(ex);
       }
     }
 
     return String.format(queryPattern, object.getClass().getSimpleName(), sjFields, sjValues);
+  }
+
+  private String createSqlUpdate(T object, ArrayList<Object> params) {
+    String queryPattern = "UPDATE %s SET %s WHERE %s = ?";
+
+    var sj = new StringJoiner(",");
+    try {
+      for (Field field : fields) {
+        if (field.equals(idField)) {
+          continue;
+        }
+        sj.add(String.format("%s = ?", field.getName()));
+        params.add(field.get(object));
+      }
+
+      params.add(idField.get(object));
+    } catch (IllegalAccessException ex) {
+      log.error(ex.getMessage(), ex);
+      throw new JdbcTemplateException(ex);
+    }
+
+    return String.format(queryPattern, object.getClass().getSimpleName(), sj, idField.getName());
   }
 
   private String createSqlFind(Class<T> object) {

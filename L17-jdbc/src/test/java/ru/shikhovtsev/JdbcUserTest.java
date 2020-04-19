@@ -36,12 +36,43 @@ public class JdbcUserTest {
   }
 
   @Test
-  void test() {
+  void saveAndGet() {
     String username = "Petya";
     long id = service.saveUser(new User(username));
     assertTrue(id != 0);
     Optional<User> user = service.getUser(id);
     User petya = user.orElseThrow(() -> new RuntimeException());
     assertEquals(petya.getName(), username);
+  }
+
+  @Test
+  void update() {
+    String petyaName = "Petya";
+    String vasyaName = "Vasya";
+
+    User petya = new User(petyaName);
+    long id = service.saveUser(petya);
+
+    petya = service.getUser(id).orElseThrow(RuntimeException::new);
+    petya.setName(vasyaName);
+    service.updateUser(petya);
+
+    User petyaFromDb = service.getUser(id).orElseThrow(RuntimeException::new);
+    assertEquals(vasyaName, petyaFromDb.getName());
+  }
+
+  @Test
+  void createOrUpdate() {
+    User petya = new User("Petya");
+    Long id = service.createOrUpdate(petya);
+    petya = service.getUser(id).orElseThrow(RuntimeException::new);
+
+    String vasya = "Vasya";
+    petya.setName(vasya);
+
+    assertEquals(id, service.createOrUpdate(petya));
+
+    petya = service.getUser(id).orElseThrow(RuntimeException::new);
+    assertEquals(vasya, petya.getName());
   }
 }

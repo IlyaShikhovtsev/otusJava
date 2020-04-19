@@ -6,9 +6,13 @@ import ru.shikhovtsev.core.sessionmanager.SessionManager;
 import java.util.Optional;
 
 public interface UserDao {
-  Optional<User> findById(long id);
+  Optional<User> findById(Long id);
 
-  long saveUser(User user);
+  Long save(User user);
+
+  Long update(User user);
+
+  Long createOrUpdate(User user);
 
   SessionManager getSessionManager();
 }

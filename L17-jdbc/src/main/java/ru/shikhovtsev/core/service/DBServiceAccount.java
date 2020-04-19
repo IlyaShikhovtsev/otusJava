@@ -6,8 +6,11 @@ import java.util.Optional;
 
 public interface DBServiceAccount {
 
-  long saveAccount(Account account);
+  Long saveAccount(Account account);
+
+  Long updateAccount(Account petya);
+
+  Long createOrUpdate(Account account);
 
   Optional<Account> getAccount(long id);
-
 }
