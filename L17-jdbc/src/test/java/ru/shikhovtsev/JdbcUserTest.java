@@ -3,6 +3,7 @@ package ru.shikhovtsev;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import ru.shikhovtsev.cachehw.MyCache;
 import ru.shikhovtsev.core.model.User;
 import ru.shikhovtsev.core.service.DbServiceUserImpl;
 import ru.shikhovtsev.h2.DataSourceH2;
@@ -21,12 +22,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JdbcUserTest {
   private static DbServiceUserImpl service;
+  private static MyCache<Long, User> cache;
 
   @BeforeAll
   static void createTable() throws SQLException {
     var dataSource = new DataSourceH2();
     var jdbcTemplate = new JdbcTemplate<>(new DbExecutor<>(), User.class);
-    service = new DbServiceUserImpl(new UserDaoJdbc(new SessionManagerJdbc(dataSource), jdbcTemplate));
+    cache = new MyCache<>();
+    service = new DbServiceUserImpl(new UserDaoJdbc(new SessionManagerJdbc(dataSource), jdbcTemplate), cache);
 
     try (Connection connection = dataSource.getConnection();
          PreparedStatement pst = connection.prepareStatement("create table user(id long auto_increment, name varchar(50))")) {
@@ -41,7 +44,7 @@ public class JdbcUserTest {
     long id = service.saveUser(new User(username));
     assertTrue(id != 0);
     Optional<User> user = service.getUser(id);
-    User petya = user.orElseThrow(() -> new RuntimeException());
+    User petya = user.orElseThrow(RuntimeException::new);
     assertEquals(petya.getName(), username);
   }
 
