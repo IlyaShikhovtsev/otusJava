@@ -34,6 +34,7 @@
     <module>L17-jdbc</module>
     <module>L19-hibernate</module>
     <module>L21-cache</module>
+    <module>L23-webserver</module>
   </modules>
 
   <properties>
