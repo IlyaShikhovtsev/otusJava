@@ -1,4 +1,4 @@
-package ru.shikhovtsev;
+package ru.shikhovtsev.hibernate;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;

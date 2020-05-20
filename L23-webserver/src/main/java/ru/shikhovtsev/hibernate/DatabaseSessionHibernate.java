@@ -1,4 +1,4 @@
-package ru.shikhovtsev;
+package ru.shikhovtsev.hibernate;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

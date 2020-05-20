@@ -3,8 +3,8 @@ package ru.shikhovtsev.web.servlet;
 
 import ru.shikhovtsev.core.model.Role;
 import ru.shikhovtsev.core.service.DBServiceUser;
-import ru.shikhovtsev.web.Context;
 import ru.shikhovtsev.web.template.TemplateProcessor;
+import ru.shikhovtsev.web.template.TemplateProcessorImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,9 +27,9 @@ public class LoginServlet extends HttpServlet {
   private final DBServiceUser serviceUser;
   private final TemplateProcessor templateProcessor;
 
-  public LoginServlet() {
-    this.serviceUser = Context.getService(DBServiceUser.class);
-    this.templateProcessor = Context.getService(TemplateProcessor.class);
+  public LoginServlet(DBServiceUser serviceUser, TemplateProcessorImpl templateProcessor) {
+    this.serviceUser = serviceUser;
+    this.templateProcessor = templateProcessor;
   }
 
   @Override

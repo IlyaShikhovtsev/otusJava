@@ -1,4 +1,4 @@
-package ru.shikhovtsev;
+package ru.shikhovtsev.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

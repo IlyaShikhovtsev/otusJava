@@ -7,17 +7,24 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import ru.shikhovtsev.core.service.DbServiceUserImpl;
 import ru.shikhovtsev.web.helpers.FileSystemHelper;
 import ru.shikhovtsev.web.servlet.AuthorizationFilter;
 import ru.shikhovtsev.web.servlet.LoginServlet;
 import ru.shikhovtsev.web.servlet.UserServlet;
+import ru.shikhovtsev.web.template.TemplateProcessorImpl;
 
 public class WebServer {
   private static final String START_PAGE_NAME = "index.html";
   private static final String COMMON_RESOURCES_DIR = "static";
   private final Server server;
+  private final DbServiceUserImpl userService;
+  private final TemplateProcessorImpl templateProcessor;
 
-  public WebServer() {
+  public WebServer(DbServiceUserImpl userService, TemplateProcessorImpl templateProcessor) {
+    this.userService = userService;
+    this.templateProcessor = templateProcessor;
+
     server = new Server(8080);
 
     var handlers = new HandlerList();
@@ -38,7 +45,7 @@ public class WebServer {
 
   private ServletContextHandler createServletHandler() {
     var handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-    handler.addServlet(UserServlet.class, "/users");
+    handler.addServlet(new ServletHolder(new UserServlet(userService, templateProcessor)), "/users");
     return handler;
   }
 
@@ -51,7 +58,7 @@ public class WebServer {
   }
 
   private Handler applySecurity(ServletContextHandler servletHandler) {
-    servletHandler.addServlet(new ServletHolder(new LoginServlet()), "/login");
+    servletHandler.addServlet(new ServletHolder(new LoginServlet(userService, templateProcessor)), "/login");
     AuthorizationFilter authorizationFilter = new AuthorizationFilter();
     servletHandler.addFilter(new FilterHolder(authorizationFilter), "/users", null);
     return servletHandler;

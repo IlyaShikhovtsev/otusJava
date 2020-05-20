@@ -6,7 +6,7 @@ import ru.shikhovtsev.core.model.Phone;
 import ru.shikhovtsev.core.model.Role;
 import ru.shikhovtsev.core.model.User;
 import ru.shikhovtsev.core.service.DBServiceUser;
-import ru.shikhovtsev.web.Context;
+import ru.shikhovtsev.core.service.DbServiceUserImpl;
 import ru.shikhovtsev.web.template.TemplateProcessor;
 
 import javax.servlet.ServletException;
@@ -25,12 +25,14 @@ public class UserServlet extends HttpServlet {
   private static final String PARAM_NAME = "name";
   private static final String PARAM_ADDRESS = "address";
   private static final String PARAM_PHONE = "phone";
+  private static final String USER_PAGE_TEMPLATE = "users.ftl";
 
   private final DBServiceUser userService;
-  private final String USER_PAGE_TEMPLATE = "users.ftl";
+  private final TemplateProcessor templateProcessor;
 
-  public UserServlet() {
-    this.userService = Context.getService(DBServiceUser.class);
+  public UserServlet(DbServiceUserImpl userService, TemplateProcessor templateProcessor) {
+    this.userService = userService;
+    this.templateProcessor = templateProcessor;
   }
 
   @Override
@@ -43,7 +45,7 @@ public class UserServlet extends HttpServlet {
     List<User> users = userService.getAll();
     data.put("users", users);
 
-    resp.getWriter().println(Context.getService(TemplateProcessor.class).getPage(USER_PAGE_TEMPLATE, data));
+    resp.getWriter().println(templateProcessor.getPage(USER_PAGE_TEMPLATE, data));
   }
 
   @Override
