@@ -1,6 +1,8 @@
 package ru.shikhovtsev.core.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import ru.shikhovtsev.core.dao.UserDao;
 import ru.shikhovtsev.core.model.User;
 import ru.shikhovtsev.core.sessionmanager.SessionManager;
@@ -10,13 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
+@Service
+@RequiredArgsConstructor
 public class DbServiceUserImpl implements DBServiceUser {
 
   private final UserDao userDao;
-
-  public DbServiceUserImpl(UserDao userDao) {
-    this.userDao = userDao;
-  }
 
   @Override
   public Long saveUser(User user) {

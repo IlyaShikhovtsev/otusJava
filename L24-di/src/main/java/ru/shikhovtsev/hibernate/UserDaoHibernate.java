@@ -1,7 +1,9 @@
 package ru.shikhovtsev.hibernate;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
+import org.springframework.stereotype.Repository;
 import ru.shikhovtsev.core.dao.UserDao;
 import ru.shikhovtsev.core.dao.UserDaoException;
 import ru.shikhovtsev.core.model.User;
@@ -10,13 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
+@Repository
+@RequiredArgsConstructor
 public class UserDaoHibernate implements UserDao {
 
   private final SessionManagerHibernate sessionManager;
-
-  public UserDaoHibernate(SessionManagerHibernate sessionManager) {
-    this.sessionManager = sessionManager;
-  }
 
   @Override
   public Optional<User> findById(Long id) {
