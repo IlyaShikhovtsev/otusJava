@@ -1,4 +1,4 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Пользователи</title>
 </head>
@@ -16,15 +16,13 @@
   </tr>
   </thead>
   <tbody>
-  <#list users as user>
-    <tr>
-      <td>${user.id}</td>
-      <td>${user.name}</td>
-      <td>${user.address.street}</td>
-      <td>${user.phone.number}</td>
-      <td>${user.role}</td>
-    </tr>
-  </#list>
+  <tr th:each="user : ${users}">
+    <td th:text="${user.id}"></td>
+    <td th:text="${user.name}"></td>
+    <td th:text="${user.address.street}"></td>
+    <td th:text="${user.phone.number}"></td>
+    <td th:text="${user.role}"></td>
+  </tr>
   </tbody>
 </table>
 
