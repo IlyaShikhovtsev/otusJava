@@ -7,6 +7,7 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import ru.shikhovtsev.core.service.DBServiceUser;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -39,6 +40,11 @@ public class HibernateConfig {
     var transactionManager = new HibernateTransactionManager();
     transactionManager.setSessionFactory(sessionFactory().getObject());
     return transactionManager;
+  }
+
+  @Bean(initMethod = "init")
+  public DbInitService dbInitService(DBServiceUser serviceUser) {
+    return new DbInitService(serviceUser);
   }
 
   private Properties hibernateProperties() {

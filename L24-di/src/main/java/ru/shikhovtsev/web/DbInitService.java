@@ -1,22 +1,18 @@
 package ru.shikhovtsev.web;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Service;
 import ru.shikhovtsev.core.model.Address;
 import ru.shikhovtsev.core.model.Phone;
 import ru.shikhovtsev.core.model.Role;
 import ru.shikhovtsev.core.model.User;
 import ru.shikhovtsev.core.service.DBServiceUser;
 
-@Service
 @RequiredArgsConstructor
-public class DbInitService implements InitializingBean {
+public class DbInitService {
 
   private final DBServiceUser serviceUser;
 
-  @Override
-  public void afterPropertiesSet() {
+  public void init() {
     var address = new Address("Street");
     var phone = new Phone("831483814");
     var admin = new User("admin", "admin", "админ", address, phone, Role.ADMIN);

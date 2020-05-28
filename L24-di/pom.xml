@@ -10,6 +10,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>L24-di</artifactId>
+  <name>di</name>
 
   <dependencies>
     <dependency>
@@ -54,6 +55,7 @@
   </dependencies>
 
   <build>
+    <finalName>${name}</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
