@@ -36,6 +36,7 @@
     <module>L21-cache</module>
     <module>L23-webserver</module>
     <module>L24-di</module>
+    <module>L27-JMM</module>
   </modules>
 
   <properties>
