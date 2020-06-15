@@ -37,6 +37,7 @@
     <module>L23-webserver</module>
     <module>L24-di</module>
     <module>L27-JMM</module>
+    <module>L28-messageservice</module>
   </modules>
 
   <properties>
