@@ -16,7 +16,7 @@ public class Main {
     try {
       int a = 1;
       boolean toTen = true;
-      while (true) {
+      while (!Thread.currentThread().isInterrupted()) {
         Thread.sleep(i);
 
         if (b == isFirst) {
@@ -37,6 +37,7 @@ public class Main {
         }
       }
     } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
       e.printStackTrace();
     }
   }
