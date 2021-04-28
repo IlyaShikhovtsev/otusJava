@@ -56,7 +56,7 @@
 
     <!--region Libs-->
     <lombok.version>1.18.10</lombok.version>
-    <com.google.guava.version>28.1-jre</com.google.guava.version>
+    <com.google.guava.version>29.0-jre</com.google.guava.version>
     <commons-io.version>2.7</commons-io.version>
     <jmh.version>1.21</jmh.version>
     <jol-core.version>0.9</jol-core.version>
